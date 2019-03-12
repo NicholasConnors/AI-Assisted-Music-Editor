@@ -12,7 +12,7 @@ from keras.utils import np_utils
 # Load all songs
 songs = []
 for f in os.listdir("data/preprocessed"):
-    songs.append(np.genfromtxt(("data/preprocessed/%s" % f), dtype=int, delimiter=','))
+    songs.append(np.genfromtxt(("data/preprocessed/%s" % f), dtype=int, delimiter=','))	
 	
 # Split data up into "patterns"
 pattern_length = 100
@@ -58,7 +58,7 @@ if(ans == 'y'):
     model.load_weights(filename)
     filename = filename.split('.')[0]
 
-csv_logger = CSVLogger(filename, '-training.log')
-checkpoint = ModelCheckpoint((filename, "-{epoch:02d}.hdf5"), monitor='loss', verbose=2, save_best_only=True, mode='min', period=1)
+csv_logger = CSVLogger(('%s-training.log' % filename))
+checkpoint = ModelCheckpoint(("%s-{epoch:02d}.hdf5" % filename), monitor='loss', verbose=2, save_best_only=True, mode='min', period=1)
 
 model.fit(X, y, epochs=40, batch_size=64, callbacks=[checkpoint, csv_logger])
