@@ -58,7 +58,7 @@ if(ans == 'y'):
     model.load_weights(filename)
     filename = filename.split('.')[0]
 
-csv_logger = CSVLogger('checkpoints/', filename, '-training.log')
-checkpoint = ModelCheckpoint(("checkpoints/", filename, "-{epoch:02d}.hdf5"), monitor='loss', verbose=2, save_best_only=True, mode='min', period=1)
+csv_logger = CSVLogger(filename, '-training.log')
+checkpoint = ModelCheckpoint((filename, "-{epoch:02d}.hdf5"), monitor='loss', verbose=2, save_best_only=True, mode='min', period=1)
 
 model.fit(X, y, epochs=40, batch_size=64, callbacks=[checkpoint, csv_logger])
