@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src=Tone.js></script>
+		<title>Music Test</title>
+	</head>
+	<body>
+		<canvas id="musicCanvas" width="800" height="400" style="border:1px solid #000000;">
+		Your browser does not support HTML canvases :/
+		</canvas>
+		</br>
+		<button onclick="play()" type="button">Start</button>
+		<button onclick="stop()" type="button">Stop</button>
+		<button onclick="refresh()" type="button">Clear</button>
+		Root note: 
+		<select id="keySelect" onchange="root_note_change()">
+			<option value="60">C</option>
+			<option value="62">D</option>
+			<option value="64">E</option>
+			<option value="65">F</option>
+			<option value="67">G</option>
+			<option value="69">A</option>
+			<option value="71">B</option>
+		</select>
+		Scale:
+		<select id="scaleSelect" onchange="scale_change()">
+			<option value="major">major</option>
+			<option value="minor">minor</option>
+			<option value="none">none</option>
+		</select>
+		AI:
+		<button onclick="suggest()" type="button">Suggestion</button>
+		<button onclick="use_suggestion()" type="button">Use suggestion</button>
+		
+		<script src=App.js></script>
+	</body>
+</html>
