@@ -8,6 +8,7 @@ from keras.layers import LSTM
 from keras.callbacks import ModelCheckpoint
 from keras.callbacks import CSVLogger
 from keras.utils import np_utils
+from keras import optimizers
 
 # Load all songs
 songs = []
@@ -40,12 +41,12 @@ y = np_utils.to_categorical(np.array(data_y) - lowest)
 
 # LSTM
 model = Sequential()
-model.add(LSTM(512, input_shape=((pattern_length, 1)), return_sequences=True))
-model.add(Dropout(0.5))
-model.add(LSTM(256, return_sequences=False))
-model.add(Dropout(0.5))
+model.add(LSTM(256, input_shape=((pattern_length, 1)), return_sequences=False))
+model.add(Dropout(0.3))
+#model.add(LSTM(128, return_sequences=False))
+#model.add(Dropout(0.3))
 model.add(Dense(n_notes, activation='softmax'))
-model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['categorical_accuracy'])
+model.compile(loss='categorical_crossentropy', optimizer=optimizers.Adam(lr=0.005), metrics=['accuracy'])
 
 # Checkpoints
 ans = input("Load model? [Y/N]: ").lower()
@@ -57,8 +58,10 @@ if(ans == 'y'):
     filename = input("File name: ")
     model.load_weights(filename)
     filename = filename.split('.')[0]
+else:
+	filename = input("Enter name for this model: ")
 
 csv_logger = CSVLogger(('%s-training.log' % filename))
 checkpoint = ModelCheckpoint(("%s-{epoch:02d}.hdf5" % filename), monitor='loss', verbose=2, save_best_only=True, mode='min', period=1)
 
-model.fit(X, y, epochs=40, batch_size=64, callbacks=[checkpoint, csv_logger])
+model.fit(X, y, epochs=10, batch_size=64, callbacks=[checkpoint, csv_logger])
