@@ -24,30 +24,32 @@ function freq(n) {
 
 function song() {
 	return song = {
-		bpm : 120,
-		rootNote: 64,
-		verses : [],
-		order : [],
-		synth : 1,
+		data : {
+			bpm : 120,
+			rootNote: 64,
+			verses : [],
+			order : [],
+			synth : 1,
+		},
 		
 		addVerse(verse) {
-			this.verses.push(verse)
-			this.order.push(this.verses.indexOf(verse))
+			this.data.verses.push(verse)
+			this.data.order.push(this.data.verses.indexOf(verse))
 		},
 		
 		delVerse(verse) {
-			if(this.verses.indexOf(verse) == 0)
+			if(this.data.verses.indexOf(verse) == 0)
 				return false
 			else {
-				var ind = this.verses.indexOf(verse)
+				var ind = this.data.verses.indexOf(verse)
 				if(ind == -1) return false
-				for(var i = 0; i < this.order.length; i++) {
-					if(this.order[i] > ind)
-						this.order[i] -= 1
-					else if(this.order[i] == ind) 
-						this.order[i] = 0
+				for(var i = 0; i < this.data.order.length; i++) {
+					if(this.data.order[i] > ind)
+						this.data.order[i] -= 1
+					else if(this.data.order[i] == ind) 
+						this.data.order[i] = 0
 				}
-				this.verses.splice(ind, 1)
+				this.data.verses.splice(ind, 1)
 				return true
 			}
 		},
@@ -55,15 +57,15 @@ function song() {
 		chords() {
 			chordArray = []
 
-			for(var i = 0; i < this.order.length; i++) {
-				verse = this.verses[this.order[i]]
+			for(var i = 0; i < this.data.order.length; i++) {
+				verse = this.data.verses[this.data.order[i]]
 				
 				for(var t=0; t < VERSE_COLS; t++) {
 
 					var notes = []
 					for(var n=0; n <= VERSE_ROWS; n++) {
 						if(verse.notes[n * VERSE_COLS + t]) {
-							notes.push(freq(n + this.rootNote - 12 - 1))
+							notes.push(freq(n + this.data.rootNote - 12 - 1))
 						}
 					}
 					
@@ -140,7 +142,7 @@ function musicGrid() {
 			context.fillRect(0, musicGrid.height + PROG_BAR_HEIGHT, canvas.width, SONG_ORDER_CELL_HEIGHT);
 			
 			context.font = "12px Arial"
-			for(var i = 0; i < song.order.length; i++) {
+			for(var i = 0; i < song.data.order.length; i++) {
 				context.fillStyle = '#999'
 				context.fillRect(
 					i * SONG_ORDER_CELL_WIDTH + CELL_PADDING,
@@ -150,7 +152,7 @@ function musicGrid() {
 				)
 				context.fillStyle = '#FFF'
 				context.fillText(
-					"S" + song.order[i],
+					"S" + song.data.order[i],
 					i * SONG_ORDER_CELL_WIDTH + (SONG_ORDER_CELL_WIDTH - 20) / 2,
 					musicGrid.height + PROG_BAR_HEIGHT + (SONG_ORDER_CELL_HEIGHT + 2) / 2
 				)
@@ -183,8 +185,8 @@ canvas.onmousedown = function(e){
 		}
 	} else if(mouseY < canvas.height && mouseY > canvas.height - SONG_ORDER_CELL_HEIGHT) {
 		var orderInd = Math.floor((mouseX) / SONG_ORDER_CELL_WIDTH)
-		if(orderInd >= 0 && orderInd < song.order.length) {
-			song.order[orderInd] = song.order[orderInd] + 1 >= song.verses.length ? 0 : song.order[orderInd] + 1
+		if(orderInd >= 0 && orderInd < song.data.order.length) {
+			song.data.order[orderInd] = song.data.order[orderInd] + 1 >= song.data.verses.length ? 0 : song.data.order[orderInd] + 1
 			musicGrid.draw()
 		}
 	}
@@ -267,8 +269,7 @@ function musicHandler() {
 		},
 		
 		play(song) {		
-			instrument = this.instrument(song.synth)
-			console.log(song.synth)
+			instrument = this.instrument(song.data.synth)
 			
 			Tone.Transport.bpm.value = 120
 		
@@ -277,10 +278,10 @@ function musicHandler() {
 			}, song.chords() );
 			
 			chordPart.loop = true;
-			chordPart.loopEnd = '' + (4 * song.order.length) + 'm'
+			chordPart.loopEnd = '' + (4 * song.data.order.length) + 'm'
 			chordPart.start(0)
 			
-			Tone.Transport.bpm.value = song.bpm
+			Tone.Transport.bpm.value = song.data.bpm
 			Tone.Transport.start("+0.1")
 		},
 		
@@ -343,7 +344,7 @@ function enable() {
 
 document.getElementById('bpm').addEventListener('input', e => {
   if(song)
-	song.bpm = e.target.value
+	song.data.bpm = e.target.value
   Tone.Transport.bpm.value = e.target.value
   document.getElementById("bpmText").textContent=e.target.value;
 })
@@ -357,7 +358,7 @@ function clearVerse() {
 verseDropdown = document.getElementById("selectVerse");
 function delVerse() {
 	if(currentVerse && song && !playing) {
-		ind = song.verses.indexOf(currentVerse)
+		ind = song.data.verses.indexOf(currentVerse)
 		if(song.delVerse(currentVerse)) {			
 			verseDropdown.remove(verseDropdown.options.length-1)
 			setVerse(0)
@@ -376,11 +377,11 @@ function addVerse() {
 		currentVerse = new_verse
 		
 		var opt = document.createElement("OPTION")
-		opt.text = song.verses.indexOf(currentVerse)
-		opt.value = song.verses.indexOf(currentVerse)
+		opt.text = song.data.verses.indexOf(currentVerse)
+		opt.value = song.data.verses.indexOf(currentVerse)
 		verseDropdown.add(opt)
 		
-		verseDropdown.selectedIndex = song.verses.indexOf(currentVerse)
+		verseDropdown.selectedIndex = song.data.verses.indexOf(currentVerse)
 	
 		musicGrid.draw()
 	}
@@ -388,19 +389,19 @@ function addVerse() {
 function selectVerse() {
 	if(musicGrid) {
 		verseChoice = verseDropdown.options[verseDropdown.selectedIndex].value;
-		currentVerse = song.verses[verseChoice]
+		currentVerse = song.data.verses[verseChoice]
 		musicGrid.draw()	
 	}
 }
 function setVerse(i) {
-	currentVerse = song.verses[i]
+	currentVerse = song.data.verses[i]
 	verseDropdown.selectedIndex = i
 	musicGrid.draw()
 }
 function changeRoot() {
 	dropdown = document.getElementById("selectRoot");
 	if(song)
-		song.rootNote = parseInt(dropdown.options[dropdown.selectedIndex].value);
+		song.data.rootNote = parseInt(dropdown.options[dropdown.selectedIndex].value);
 }
 function changeScale() {
 	dropdown = document.getElementById("selectScale");
@@ -412,29 +413,99 @@ function changeScale() {
 function changeSynth() {
 	dropdown = document.getElementById("selectSynth");
 	if(song) {
-		song.synth = parseInt(dropdown.options[dropdown.selectedIndex].value);
+		song.data.synth = parseInt(dropdown.options[dropdown.selectedIndex].value);
 	}
 }
 function addSequence() {
-	song.order.push(0)
+	song.data.order.push(0)
 	musicGrid.draw()
 }
 function delSequence() {
-	if(song.order.length != 1)
-		song.order.splice(song.order.length - 1, 1)
+	if(song.data.order.length != 1)
+		song.data.order.splice(song.data.order.length - 1, 1)
 	musicGrid.draw()
 }
+function exportWav() {
+	$.ajax({
+		type: 'POST',
+		url: 'http://localhost:1337/exportWav',
+		data: JSON.stringify({
+			cols : VERSE_COLS,
+			rows : VERSE_ROWS,
+			songData : song.data
+		}),
+		contentType: "application/json; charset=utf-8",
+		success: function(data) {
+			var a = document.createElement("a")
+			
+			array = new Uint8Array(data.length)
+			for(var i = 0; i < data.length; i++) {
+				array[i] = data.charCodeAt(i)
+			}
+			
+			var file = new Blob([array], {type: "application/octet-stream"})
+			a.href = URL.createObjectURL(file)
+			a.download = 'song.mid'
+			a.click()
+		},
+		error: function(error) {
+			alert('There was an error! Error:' + error.name + ':' + error.status)
+		}
+	})
+}
+function save() {
+	var jsonData = JSON.stringify(song.data)
+	var a = document.createElement("a")
+	var file = new Blob([jsonData], {type: 'text/plain'})
+	a.href = URL.createObjectURL(file)
+	a.download = 'song.json'
+	a.click()
+}
+function readSingleFile(evt) {
+	if(window.File && window.FileReader && window.FileList && window.Blob) {
+		var file = evt.target.files[0]
+		var reader = new FileReader()
+		if(file && reader) {
+			reader.readAsText(file)
+			reader.onload = function() {
+				song.data = JSON.parse(reader.result)				
+				currentVerse = song.data.verses[0]
+				
+				verseDropdown.selectedIndex = 0
+				while(song.data.verses.length > verseDropdown.options.length) {
+					var opt = document.createElement("OPTION")
+					opt.text = verseDropdown.options.length
+					opt.value = verseDropdown.options.length
+					verseDropdown.add(opt)
+				}
+				while(song.data.verses.length < verseDropdown.options.length) {
+					verseDropdown.remove(verseDropdown.options.length-1)
+				}	
+				
+				musicGrid.draw()
+			}
+		}
+		else {
+			alert('Could not load that file')
+		}
+	}
+	else {
+		alert('The File APIs are not fully supported in this broswer!')
+	}
+}
+document.getElementById('file').addEventListener('change', readSingleFile, false)
+
 
 // PROGRESS BAR
 function progressBar() {
 	if(chordPart && playing) {
 		progress = chordPart.progress
 		
-		var playingVerseIndex = Math.floor(progress * song.order.length)
-		if(currentVerse != song.verses[song.order[playingVerseIndex]])
-			setVerse(song.order[playingVerseIndex])
+		var playingVerseIndex = Math.floor(progress * song.data.order.length)
+		if(currentVerse != song.data.verses[song.data.order[playingVerseIndex]])
+			setVerse(song.data.order[playingVerseIndex])
 		
-		var playingVerseProgress = (progress * song.order.length) % 1
+		var playingVerseProgress = (progress * song.data.order.length) % 1
 	
 		context.fillStyle = '#000';
 		context.fillRect(0, musicGrid.height, canvas.width, PROG_BAR_HEIGHT);
@@ -451,7 +522,7 @@ function progressBar() {
 		context.fillRect(
 			CELL_PADDING, 
 			canvas.height - PROG_BAR_HEIGHT + CELL_PADDING, 
-			progress * (song.order.length * SONG_ORDER_CELL_WIDTH - 2 * CELL_PADDING), 
+			progress * (song.data.order.length * SONG_ORDER_CELL_WIDTH - 2 * CELL_PADDING), 
 			PROG_BAR_HEIGHT - 2 * CELL_PADDING
 		)
 		

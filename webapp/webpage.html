@@ -4,6 +4,12 @@
 		<script src=Tone.js></script>
 		<title>Music Test</title>
 		<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
+		<script type="text/javascript" src="https://unpkg.com/@tonejs/midi"></script>
+		<script type="text/javascript" src="https://unpkg.com/tone@13.4.9"></script>
+		<script type="text/javascript" src="https://unpkg.com/@tonejs/ui@0.0.8"></script>
+		<script src=jquery-3.3.1.min.js></script>
+		<script src=Tone.js></script>
+		<script src=App.js></script>
 	</head>
 	<body>
 		<canvas id="musicCanvas" width="800" height="400" style="border:1px solid #000000;">
@@ -62,7 +68,10 @@
 		<button id='delVerse' onclick="delVerse()" type="button">Delete</button>
 		</br>Add a new sequence; clear the current sequence; pick a different sequence to work on; or delete the current sequence.
 		
-		<script src=App2.js></script>
+		</br>
+		<button id='save' onclick="save()" type="button">Save</button>
+		<button id='export' onclick="exportWav()" type="button">Export</button>
+		<input type="file" id="file" name="files[]"/>
 		
 		<p>
 		Click on the grid to assign notes. </br>
