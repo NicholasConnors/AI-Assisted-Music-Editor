@@ -3,32 +3,17 @@
 	<head>
 		<script src=Tone.js></script>
 		<title>Music Test</title>
-		<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
 	</head>
 	<body>
 		<canvas id="musicCanvas" width="800" height="400" style="border:1px solid #000000;">
 		Your browser does not support HTML canvases :/
-		If you're using Internet Explorer maybe try not doing that.
-		</canvas>		
+		</canvas>
 		</br>
-		
-		<button id='play' onclick="play()" type="button">Play</button>
-		<button id='stop' onclick="stop()" type="button">Stop</button>
-		
-		</br>
-		SONG OPTIONS: 
-		</br>
-		Length (# of sequences played): 
-		<button id='addSequence' onclick="addSequence()" type="button">Longer</button>
-		<button id='delSequence' onclick="delSequence()" type="button">Shorter</button>
-		
-		<div>Tempo (beats per minute): <span id='bpmText'>120</span> 
-		<input id="bpm" type="range" min="60" max="600" step="1" value="120">
-		</div>
-		
-		</br>
+		<button onclick="play()" type="button">Start</button>
+		<button onclick="stop()" type="button">Stop</button>
+		<button onclick="refresh()" type="button">Clear</button>
 		Root note: 
-		<select id="selectRoot" onchange="changeRoot()">
+		<select id="keySelect" onchange="root_note_change()">
 			<option value="60">C</option>
 			<option value="62">D</option>
 			<option value="64">E</option>
@@ -37,42 +22,16 @@
 			<option value="69">A</option>
 			<option value="71">B</option>
 		</select>
-		</br>
-		Scale (doesn't do anything aside from change the display): 
-		<select id="selectScale" onchange="changeScale()">
+		Scale:
+		<select id="scaleSelect" onchange="scale_change()">
 			<option value="major">major</option>
 			<option value="minor">minor</option>
 			<option value="none">none</option>
 		</select>
-		</br>
-		Synth:
-		<select id="selectSynth" onchange="changeSynth()">
-			<option value=2>Triangle</option>
-			<option value=1>Sine</option>
-			<option value=3>Square</option>
-			<option value=4>FM</option>
-		</select>
-		</br>
-		</br>
-		SEQUENCE OPTIONS:
-		<button id='addVerse' onclick="addVerse()" type="button">New</button>
-		<button id='clearVerse' onclick="clearVerse()" type="button">Clear</button>
-		Select
-		<select id="selectVerse" onchange="selectVerse()"> </select>
-		<button id='delVerse' onclick="delVerse()" type="button">Delete</button>
-		</br>Add a new sequence; clear the current sequence; pick a different sequence to work on; or delete the current sequence.
+		AI:
+		<button onclick="suggest()" type="button">Suggestion</button>
+		<button onclick="use_suggestion()" type="button">Use suggestion</button>
 		
-		<script src=App2.js></script>
-		
-		<p>
-		Click on the grid to assign notes. </br>
-		The grid shows a 4 measure sequence. </br>
-		Your song is made up of these sequences. </br>
-		You can change the order of sequences by clicking the squares at the bottom of the screen. </br>
-		You can increase the length of the song (# of sequences) by clicking "longer" and "shorter". </br>
-		You can change the BPM of the song while its playing. </br>
-		You can change the scale displayed on the grid to make it easier to play in a scale. </br>
-		You can select from a set of synth sounds. </br>
-		</p>
+		<script src=App.js></script>
 	</body>
 </html>
