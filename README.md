@@ -18,3 +18,6 @@ notes_to_csv.py : This script will take a single csv file of notes and create a 
 generate_song.py : This script will generate a snippet of a new song (saved as song.csv). Takes in one argument: path/to/model/checkpoint.hdf5
 
 LSTM.py : This script is for training the AI. A checkpoint can be loaded before starting training.
+
+### Web app:
+
