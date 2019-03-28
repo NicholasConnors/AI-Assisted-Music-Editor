@@ -1,6 +1,12 @@
 # MAIS202-Final-Project
 Creating a simple webpage-based melody editor with helpful AI suggestions.
 
+### Web app:
+
+Bandmate is an in-browser music editor with integrated AI suggestions in the same vein as predictive text.
+
+The design of the Bandmate music editor was very much <strike>ripped off of</strike> inspired by [BeepBox]("https://www.beepbox.co/"). I essentially wanted to make a similar and simpler webapp but with AI integration.
+
 ### Resources used:
 
 The Midicsv and Csvmidi exe files are from http://www.fourmilab.ch/webtools/midicsv/. Copyright info (public domain) found at the bottom of the page.
@@ -19,5 +25,4 @@ generate_song.py : This script will generate a snippet of a new song (saved as s
 
 LSTM.py : This script is for training the AI. A checkpoint can be loaded before starting training.
 
-### Web app:
-
+There are requirements.txt files for the webapp and for the LSTM training. Everything was programmed using Python 3.7.
