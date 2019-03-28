@@ -1,0 +1,5 @@
+Keras==2.2.4
+tensorflow==1.13.1
+Flask==1.0.2
+MIDIUtil==1.2.1
+numpy==1.14.3

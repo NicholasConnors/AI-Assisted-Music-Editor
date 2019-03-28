@@ -11,9 +11,9 @@ from keras.utils import np_utils
 from keras.models import load_model
 
 
-pattern_length = 100
-lowest = 30
-n_notes = 99
+pattern_length = 64
+lowest = 32
+n_notes = 97
 
 def random_seed():
 	#Generate random "seed"
@@ -31,7 +31,6 @@ def seed():
 	song = np.genfromtxt(("data/preprocessed/%s" % filename), dtype=int, delimiter=',')	
 		
 	# Split data up into "patterns"
-	pattern_length = 100
 	data_X = []
 	for i in range(0, len(song) - pattern_length, 1):
 		data_X.append(song[i:i+pattern_length])
@@ -51,7 +50,7 @@ def generate_song(model):
 	
 	song = []
 	#Generate
-	for i in range(100):
+	for i in range(pattern_length):
 		x = np.reshape(pattern, (1, len(pattern), 1))
 		prediction = model.predict(x, verbose=0).flatten()
 		index=np.argmax(prediction)

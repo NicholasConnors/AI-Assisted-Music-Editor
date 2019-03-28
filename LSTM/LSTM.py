@@ -16,7 +16,7 @@ for f in os.listdir("data/preprocessed"):
     songs.append(np.genfromtxt(("data/preprocessed/%s" % f), dtype=int, delimiter=','))	
 	
 # Split data up into "patterns"
-pattern_length = 100
+pattern_length = 64
 data_X = []
 data_y = []
 for f in songs:
@@ -27,8 +27,8 @@ n_patterns = len(data_X)
 print("Total Patterns: ", n_patterns)
 
 # Remember highest and lowest used notes
-lowest = 30
-n_notes = 99
+lowest = 32
+n_notes = 97
 
 # Reshape X
 X = np.reshape(data_X, (n_patterns, pattern_length, 1))
@@ -41,12 +41,12 @@ y = np_utils.to_categorical(np.array(data_y) - lowest)
 
 # LSTM
 model = Sequential()
-model.add(LSTM(256, input_shape=((pattern_length, 1)), return_sequences=False))
+model.add(LSTM(256, input_shape=((pattern_length, 1)), return_sequences=True))
 model.add(Dropout(0.3))
-#model.add(LSTM(128, return_sequences=False))
-#model.add(Dropout(0.3))
+model.add(LSTM(256, return_sequences=False))
+model.add(Dropout(0.3))
 model.add(Dense(n_notes, activation='softmax'))
-model.compile(loss='categorical_crossentropy', optimizer=optimizers.Adam(lr=0.005), metrics=['accuracy'])
+model.compile(loss='categorical_crossentropy', optimizer=optimizers.Adam(lr=0.005))
 
 # Checkpoints
 ans = input("Load model? [Y/N]: ").lower()
@@ -64,4 +64,4 @@ else:
 csv_logger = CSVLogger(('%s-training.log' % filename))
 checkpoint = ModelCheckpoint(("%s-{epoch:02d}.hdf5" % filename), monitor='loss', verbose=2, save_best_only=True, mode='min', period=1)
 
-model.fit(X, y, epochs=10, batch_size=64, callbacks=[checkpoint, csv_logger])
+model.fit(X, y, epochs=40, batch_size=256, callbacks=[checkpoint, csv_logger])

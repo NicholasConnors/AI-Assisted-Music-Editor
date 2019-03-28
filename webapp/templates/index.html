@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Placeholder</title>
+		<script type="text/javascript" src="https://unpkg.com/@tonejs/midi"></script>
+		<script type="text/javascript" src="https://unpkg.com/tone@13.4.9"></script>
+		<script type="text/javascript" src="https://unpkg.com/@tonejs/ui@0.0.8"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<link rel="stylesheet" href="./static/css/style.css">
+		<style data="slider" type="text/css"></style>
+	</head>
+	<body>
+		<div class="content">
+			<div class='section'>
+				<canvas id="musicCanvas" width="0" height="0" style="border:2px solid #000000;">
+				Your browser does not support HTML canvases :/
+				If you're using Internet Explorer maybe try not doing that.
+				</canvas></br><input class="slider" id="scroll" type="range" min="0" max="1" step="0.1" value="0">
+			</div>
+			<div class='section' id='right'>
+				<span id='rightAlign'>Placeholder V1</span>
+				<h3>Song</h3> 
+				<button id='play' onclick="play()" type="button">Play</button>
+				<button id='stop' onclick="stop()" type="button">Stop</button>
+				<div class='subsection'>
+					Length (# of sequences played): 
+					<button id='addSequence' onclick="addSequence()" type="button">+</button>
+					<button id='delSequence' onclick="delSequence()" type="button">-</button>
+					</br>
+					Tempo (bpm): <span id='bpmText'>120</span>
+					<div id="bpmContainer">
+					<input class="slider" id="bpm" type="range" min="60" max="600" step="1" value="120">
+					</div>
+					</br>
+					Root note: 
+					<select id="selectRoot" onchange="changeRoot()">
+						<option value="60">C</option>
+						<option value="62">D</option>
+						<option value="64">E</option>
+						<option value="65">F</option>
+						<option value="67">G</option>
+						<option value="69">A</option>
+						<option value="71">B</option>
+					</select>
+					Scale: 
+					<select id="selectScale" onchange="changeScale()">
+						<option value="major">major</option>
+						<option value="minor">minor</option>
+						<option value="none">none</option>
+					</select>
+					Synth:
+					<select id="selectSynth" onchange="changeSynth()">
+						<option value=1>Sine</option>
+						<option value=2>Triangle</option>
+						<option value=3>Square</option>
+						<option value=4>FM</option>
+						<option value=5>AM</option>
+					</select>
+					</br>
+				</div>
+				<h3>Sequences</h3>
+				<div class='subsection'>
+					Current sequence: 
+					<select id="selectVerse" onchange="selectVerse()"> </select>
+					</br>
+					<button id='addVerse' onclick="addVerse()" type="button">New</button>
+					<button id='clearVerse' onclick="clearVerse()" type="button">Clear</button>
+					<button id='delVerse' onclick="delVerse()" type="button">Delete</button>
+				</div>
+				
+				<h3>AI</h3>
+				<div class='subsection'>
+					<button id='predict' onclick="predict()" type="button">Get suggestion</button>
+					<button id='applyPredict' onclick="applyPredict()" type="button">Apply</button>
+					<button id='clearPredict' onclick="clearPredict()" type="button">Clear</button>
+					</br> Status: <span id='aiText'>Available</span>
+				</div>
+				<h3>File</h3>
+				<div class='subsection'>
+					<button id='save' onclick="save()" type="button">Save</button>
+					<button id='export' onclick="exportMIDI()" type="button">Export</button>
+					<input type="file" id="file" name="files[]" style="display: none;" />
+					<button id="load" onclick="document.getElementById('file').click();">Load</button>
+				</div>
+			</div>
+		</div>
+		<div class=content style='clear:both; font-size:20px;'>
+			<h3>Placeholder</h3>
+			<p>
+			Placeholder was made for the MAIS202 bootcamp as my final project. 
+			It is an in-browser music editor with integrated AI suggestions in the same vein as predictive text.
+			</p>
+			<p>
+			The design of the Placeholder music editor was very much <strike>ripped off of</strike> inspired by <a href="https://www.beepbox.co/" target='_blank'>BeepBox</a>.
+			I essentially wanted to make a similar and simpler webapp but with AI integration.
+			</p>
+			<h3>How to</h3>
+			<p>
+			Click on the grid to add and remove notes to the current sequence of music.  
+			</p>
+			<p>
+			You can compose a song out of multiple sequences. 
+			Use the sequence tab to create new sequences, delete existing ones, clear the current grid, and change which sequence you're working on.
+			The sequences currently in the song appear at the bottom. Click them to cycle through the sequences and order them how you want.
+			</p>
+			<p>
+			Songs can be saved/loaded to/from .json files on your computer.
+			Clicking export will return your song to you as a MIDI file.
+			</p>
+			<p>
+			Finally, use the get suggestion button in the AI tab to have a neural network chose the next measure for you.
+			You have to click apply afterwards to use the suggestion, or manually click on the grid if you only want to keep part of it.
+			</p>
+		</div>
+		<script type="text/javascript" src='./static/js/editor.js'></script>
+	</body>
+</html>
