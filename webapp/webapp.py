@@ -120,5 +120,5 @@ def predict():
 if __name__ == "__main__":
 	print("* Loading Keras model and starting Flask server...")
 	load_LSTM()
+	webbrowser.open_new("http://localhost:3000")
 	app.run(host='localhost', port='3000')
-	webbrowser.open_new("localhost:3000")
