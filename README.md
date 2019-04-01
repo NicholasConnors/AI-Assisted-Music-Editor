@@ -1,6 +1,10 @@
 # AI Assisted Music Editor, "Bandmate"
 Creating a simple webpage-based melody editor with helpful AI suggestions. Made as part of the McGill AI Society bootcamp MAIS202.
 
+<img src="../master/documentation/images/img.PNG">
+
+---
+
 ### Web app:
 
 Bandmate is an in-browser music editor with integrated AI suggestions in the same vein as predictive text.
