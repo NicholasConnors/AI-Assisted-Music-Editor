@@ -1,5 +1,5 @@
-# MAIS202 Final Project: AI Assisted Music Editor, "Bandmate"
-Creating a simple webpage-based melody editor with helpful AI suggestions.
+# AI Assisted Music Editor, "Bandmate"
+Creating a simple webpage-based melody editor with helpful AI suggestions. Made as part of the McGill AI Society bootcamp MAIS202.
 
 ### Web app:
 
